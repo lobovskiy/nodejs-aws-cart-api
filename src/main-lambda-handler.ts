@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { configure } from '@codegenie/serverless-express';
 import { Callback, Context, Handler } from 'aws-lambda';
 import helmet from 'helmet';
+import 'dotenv/config';
 
 import { AppModule } from './app.module';
 
