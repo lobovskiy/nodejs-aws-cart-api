@@ -8,6 +8,7 @@ module.exports = (options, webpack) => {
 
   return {
     ...options,
+    entry: './src/main-lambda-handler.ts',
     externals: [],
     optimization: {
       minimizer: [
