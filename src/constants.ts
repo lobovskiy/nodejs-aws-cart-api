@@ -1,5 +1,7 @@
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
+import { User } from './users/users.entity';
+
 export const JWT_CONFIG = {
   secret: 'secret',
   expiresIn: '12h',
@@ -15,4 +17,6 @@ export const postgresConnection: PostgresConnectionOptions = {
   ssl: {
     rejectUnauthorized: false,
   },
+  synchronize: true,
+  entities: [User],
 };
