@@ -85,6 +85,18 @@ export class CartService {
     });
   }
 
+  async setCartStatus(userId: string, status: string): Promise<Cart> {
+    const cart = await this.findByUserId(userId);
+
+    if (!cart) {
+      throw new Error('Cart does not exist.');
+    }
+
+    await this.cartsRepository.update(cart.id, { status });
+
+    return { ...cart, status };
+  }
+
   async removeByUserId(userId): Promise<void> {
     await this.cartsRepository.delete({ user_id: userId });
   }

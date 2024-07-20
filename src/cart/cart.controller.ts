@@ -88,16 +88,16 @@ export class CartController {
       };
     }
 
-    const { id: cartId, items } = cart;
     const total = calculateCartTotal(cart);
-    const order = this.orderService.create({
-      ...body, // TODO: validate and pick only necessary data
-      userId,
-      cartId,
-      items,
-      total,
+    const order = await this.orderService.create(userId, {
+      user_id: userId,
+      cart_id: body.cart_id,
+      address: body.address,
+      comment: body.address.comment,
+      total: total,
     });
-    this.cartService.removeByUserId(userId);
+
+    await this.cartService.setCartStatus(userId, 'ORDERED');
 
     return {
       statusCode: HttpStatus.OK,
