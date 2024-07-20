@@ -1,6 +1,8 @@
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 import { User } from './users/users.entity';
+import { CartItem } from './cart/cart-item.entity';
+import { Cart } from './cart/cart.entity';
 
 export const JWT_CONFIG = {
   secret: 'secret',
@@ -18,5 +20,5 @@ export const postgresConnection: PostgresConnectionOptions = {
     rejectUnauthorized: false,
   },
   synchronize: true,
-  entities: [User],
+  entities: [User, CartItem, Cart],
 };
