@@ -95,6 +95,8 @@ export class CartController {
 
     const order = await this.cartService.checkout(userId, orderData);
 
+    console.log('New order is created: ', JSON.stringify(order));
+
     return {
       statusCode: HttpStatus.OK,
       message: 'OK',
