@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Cart } from '../cart.entity';
 import { CartItem } from '../cart-item.entity';
+import { OrderService } from 'src/order';
+import { Order } from 'src/order/order.entity';
 
 @Injectable()
 export class CartService {
@@ -13,6 +15,12 @@ export class CartService {
 
     @InjectRepository(CartItem)
     private cartItemsRepository: Repository<CartItem>,
+
+    @InjectRepository(Order)
+    private ordersRepository: Repository<Order>,
+
+    private orderService: OrderService,
+    private dataSource: DataSource,
   ) {}
 
   async findByUserId(userId: string): Promise<Cart> {
@@ -85,16 +93,36 @@ export class CartService {
     });
   }
 
-  async setCartStatus(userId: string, status: string): Promise<Cart> {
+  async checkout(userId: string, orderData: object): Promise<Order> {
     const cart = await this.findByUserId(userId);
 
     if (!cart) {
       throw new Error('Cart does not exist.');
     }
 
-    await this.cartsRepository.update(cart.id, { status });
+    const newOrder = this.ordersRepository.create(orderData);
 
-    return { ...cart, status };
+    const queryRunner = this.dataSource.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      await queryRunner.manager.save<Order>(newOrder);
+      await queryRunner.manager.update<Cart>(Cart, cart.id, {
+        status: 'ORDERED',
+      });
+
+      await queryRunner.commitTransaction();
+
+      return newOrder;
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+
+      throw err;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async removeByUserId(userId): Promise<void> {
