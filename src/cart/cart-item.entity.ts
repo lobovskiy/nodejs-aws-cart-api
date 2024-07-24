@@ -18,7 +18,7 @@ export class CartItem {
   @Column({ type: 'uuid', nullable: false })
   product_id: string;
 
-  @Column({ type: 'integer', nullable: false, default: 1 })
+  @Column({ type: 'float', nullable: false, default: 1 })
   price: number;
 
   @Column({ type: 'integer', nullable: false })
