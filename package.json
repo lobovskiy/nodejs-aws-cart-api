@@ -22,7 +22,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "cdk:deploy:dev": "npm run build:cdk && cd cdk && cdk deploy CartAppCdkStack/CartAppDevStageStack",
     "cdk:deploy:prod": "npm run build:cdk && cd cdk && cdk deploy CartAppCdkStack/CartAppProdStageStack",
-    "cdk:destroy": "cd cdk && cdk destroy --all"
+    "cdk:destroy": "cd cdk && cdk destroy --all",
+    "docker:build": "docker build -t cart-api ."
   },
   "dependencies": {
     "@codegenie/serverless-express": "^4.14.1",
