@@ -8,7 +8,8 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "build:cdk": "nest build --webpack",
+    "build:webpack": "nest build --webpack --webpackPath webpack.prod.js",
+    "build:webpack:cdk": "nest build --webpack --webpackPath webpack.cdk.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -20,8 +21,8 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "cdk:deploy:dev": "npm run build:cdk && cd cdk && cdk deploy CartAppCdkStack/CartAppDevStageStack",
-    "cdk:deploy:prod": "npm run build:cdk && cd cdk && cdk deploy CartAppCdkStack/CartAppProdStageStack",
+    "cdk:deploy:dev": "npm run build:webpack:cdk && cd cdk && cdk deploy CartAppCdkStack/CartAppDevStageStack",
+    "cdk:deploy:prod": "npm run build:webpack:cdk && cd cdk && cdk deploy CartAppCdkStack/CartAppProdStageStack",
     "cdk:destroy": "cd cdk && cdk destroy --all",
     "docker:build": "docker build -t cart-api ."
   },
@@ -71,7 +72,8 @@
     "ts-loader": "^9.4.3",
     "ts-node": "10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.1.3"
+    "typescript": "^5.1.3",
+    "webpack-merge": "^6.0.1"
   },
   "jest": {
     "moduleFileExtensions": [

@@ -8,7 +8,7 @@ RUN npm ci && npm cache clean --force
 FROM setup AS build
 WORKDIR /usr/src/app
 COPY . .
-RUN npm run build
+RUN npm run build:webpack
 
 # Production stage
 FROM alpine as production
