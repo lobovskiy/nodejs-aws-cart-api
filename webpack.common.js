@@ -8,7 +8,6 @@ module.exports = (options, webpack) => {
 
   return {
     ...options,
-    entry: './src/main-lambda-handler.ts',
     externals: [],
     optimization: {
       minimizer: [
@@ -18,11 +17,6 @@ module.exports = (options, webpack) => {
           },
         }),
       ],
-    },
-    output: {
-      path: __dirname + '/cdk/dist',
-      filename: 'main.js',
-      libraryTarget: 'commonjs2',
     },
     plugins: [
       ...options.plugins,
